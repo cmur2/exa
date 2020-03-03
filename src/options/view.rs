@@ -225,7 +225,7 @@ impl Columns {
         let git = cfg!(feature="git") && matches.has(&flags::GIT)?;
 
         let blocks = matches.has(&flags::BLOCKS)?;
-        let group  = matches.has(&flags::GROUP)?;
+        let group  = true; // matches.has(&flags::GROUP)?;
         let inode  = matches.has(&flags::INODE)?;
         let links  = matches.has(&flags::LINKS)?;
 
@@ -254,7 +254,7 @@ impl SizeFormat {
         Ok(match flag {
             Some(f) if f.matches(&flags::BINARY)  => SizeFormat::BinaryBytes,
             Some(f) if f.matches(&flags::BYTES)   => SizeFormat::JustBytes,
-            _                                     => SizeFormat::DecimalBytes,
+            _                                     => SizeFormat::BinaryBytes,
         })
     }
 }

@@ -12,7 +12,7 @@ impl FileFilter {
     /// Determines which of all the file filter options to use.
     pub fn deduce(matches: &MatchedFlags) -> Result<FileFilter, Misfire> {
         Ok(FileFilter {
-            list_dirs_first: matches.has(&flags::DIRS_FIRST)?,
+            list_dirs_first: !matches.has(&flags::NO_DIRS_FIRST)?,
             reverse:         matches.has(&flags::REVERSE)?,
             only_dirs:       matches.has(&flags::ONLY_DIRS)?,
             sort_field:      SortField::deduce(matches)?,
@@ -120,7 +120,7 @@ impl DotFilter {
     /// special case where `--tree --all --all` won’t work: listing the
     /// parent directory in tree mode would loop onto itself!
     pub fn deduce(matches: &MatchedFlags) -> Result<DotFilter, Misfire> {
-        let count = matches.count(&flags::ALL);
+        let count = (1 + matches.count(&flags::ALL)) % 3;
 
         if count == 0 {
             Ok(DotFilter::JustFiles)
