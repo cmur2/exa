@@ -22,25 +22,23 @@ DISPLAY OPTIONS
   --icons            display icons
 
 FILTERING AND SORTING OPTIONS
-  -a, --all                  show hidden and 'dot' files
-  -d, --list-dirs            list directories like regular files
-  -L, --level DEPTH          limit the depth of recursion
-  -r, --reverse              reverse the sort order
-  -s, --sort SORT_FIELD      which field to sort by
-  --group-directories-first  list directories before other files
-  -D, --only-dirs            list only directories
-  -I, --ignore-glob GLOBS    glob patterns (pipe-separated) of files to ignore
-  --git-ignore               Ignore files mentioned in '.gitignore'
-  Valid sort fields:         name, Name, extension, Extension, size, type,
-                             modified, accessed, created, inode, and none.
-                             date, time, old, and new all refer to modified.
+  -a, --all                     increasing number of flags cycles between showing '.' and '..', normal files, dot files
+  -d, --list-dirs               list directories like regular files
+  -L, --level DEPTH             limit the depth of recursion
+  -r, --reverse                 reverse the sort order
+  -s, --sort SORT_FIELD         which field to sort by
+  --no-group-directories-first  do not list directories before other files
+  -D, --only-dirs               list only directories
+  -I, --ignore-glob GLOBS       glob patterns (pipe-separated) of files to ignore
+  --git-ignore                  Ignore files mentioned in '.gitignore'
+  Valid sort fields:            name, Name, extension, Extension, size, type,
+                                modified, accessed, created, inode, and none.
+                                date, time, old, and new all refer to modified.
 "##;
 
 static LONG_OPTIONS: &str = r##"
 LONG VIEW OPTIONS
-  -b, --binary       list file sizes with binary prefixes
   -B, --bytes        list file sizes in bytes, without any prefixes
-  -g, --group        list each file's group
   -h, --header       add a header row to each column
   -H, --links        list each file's number of hard links
   -i, --inode        list each file's inode number

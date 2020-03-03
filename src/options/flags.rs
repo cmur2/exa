@@ -29,7 +29,7 @@ pub static REVERSE:     Arg = Arg { short: Some(b'r'), long: "reverse",     take
 pub static SORT:        Arg = Arg { short: Some(b's'), long: "sort",        takes_value: TakesValue::Necessary(Some(SORTS)) };
 pub static IGNORE_GLOB: Arg = Arg { short: Some(b'I'), long: "ignore-glob", takes_value: TakesValue::Necessary(None) };
 pub static GIT_IGNORE:  Arg = Arg { short: None, long: "git-ignore",           takes_value: TakesValue::Forbidden };
-pub static DIRS_FIRST:  Arg = Arg { short: None, long: "group-directories-first",  takes_value: TakesValue::Forbidden };
+pub static NO_DIRS_FIRST:  Arg = Arg { short: None, long: "no-group-directories-first",  takes_value: TakesValue::Forbidden };
 pub static ONLY_DIRS:   Arg = Arg { short: Some(b'D'), long: "only-dirs", takes_value: TakesValue::Forbidden };
 const SORTS: Values = &[ "name", "Name", "size", "extension",
                              "Extension", "modified", "changed", "accessed",
@@ -70,7 +70,7 @@ pub static ALL_ARGS: Args = Args(&[
     &ONE_LINE, &LONG, &GRID, &ACROSS, &RECURSE, &TREE, &CLASSIFY,
     &COLOR, &COLOUR, &COLOR_SCALE, &COLOUR_SCALE,
 
-    &ALL, &LIST_DIRS, &LEVEL, &REVERSE, &SORT, &DIRS_FIRST,
+    &ALL, &LIST_DIRS, &LEVEL, &REVERSE, &SORT, &NO_DIRS_FIRST,
     &IGNORE_GLOB, &GIT_IGNORE, &ONLY_DIRS,
 
     &BINARY, &BYTES, &GROUP, &HEADER, &ICONS, &INODE, &LINKS, &MODIFIED, &CHANGED,
