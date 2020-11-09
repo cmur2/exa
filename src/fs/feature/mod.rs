@@ -1,9 +1,9 @@
 pub mod xattr;
-pub mod ignore;
 
-#[cfg(feature="git")] pub mod git;
+#[cfg(feature = "git")]
+pub mod git;
 
-#[cfg(not(feature="git"))]
+#[cfg(not(feature = "git"))]
 pub mod git {
     use std::iter::FromIterator;
     use std::path::{Path, PathBuf};
@@ -14,8 +14,10 @@ pub mod git {
     pub struct GitCache;
 
     impl FromIterator<PathBuf> for GitCache {
-        fn from_iter<I: IntoIterator<Item=PathBuf>>(_iter: I) -> Self {
-            GitCache
+        fn from_iter<I>(_iter: I) -> Self
+        where I: IntoIterator<Item=PathBuf>
+        {
+            Self
         }
     }
 
