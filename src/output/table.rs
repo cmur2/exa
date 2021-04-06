@@ -23,6 +23,7 @@ use crate::theme::Theme;
 pub struct Options {
     pub size_format: SizeFormat,
     pub time_format: TimeFormat,
+    pub user_format: UserFormat,
     pub columns: Columns,
 }
 
@@ -99,7 +100,7 @@ impl Columns {
             columns.push(Column::Timestamp(TimeType::Accessed));
         }
 
-        if cfg!(feature = "git") && self.git && actually_enable_git {
+        if self.git && actually_enable_git {
             columns.push(Column::GitStatus);
         }
 
@@ -178,6 +179,15 @@ pub enum SizeFormat {
 
     /// Do no formatting and just display the size as a number of bytes.
     JustBytes,
+}
+
+/// Formatting options for user and group.
+#[derive(PartialEq, Debug, Copy, Clone)]
+pub enum UserFormat {
+    /// The UID / GID
+    Numeric,
+    /// Show the name
+    Name,
 }
 
 impl Default for SizeFormat {
@@ -292,9 +302,20 @@ impl Environment {
 
 fn determine_time_zone() -> TZResult<TimeZone> {
     if let Ok(file) = env::var("TZ") {
-        TimeZone::from_file(format!("/usr/share/zoneinfo/{}", file))
-    }
-    else {
+        TimeZone::from_file({
+            if file.starts_with("/") {
+                file
+            } else {
+                format!("/usr/share/zoneinfo/{}", {
+                    if file.starts_with(":") {
+                        file.replacen(":", "", 1)
+                    } else {
+                        file
+                    }
+                })
+            }
+        })
+    } else {
         TimeZone::from_file("/etc/localtime")
     }
 }
@@ -311,6 +332,7 @@ pub struct Table<'a> {
     widths: TableWidths,
     time_format: TimeFormat,
     size_format: SizeFormat,
+    user_format: UserFormat,
     git: Option<&'a GitCache>,
 }
 
@@ -333,6 +355,7 @@ impl<'a, 'f> Table<'a> {
             env,
             time_format: options.time_format,
             size_format: options.size_format,
+            user_format: options.user_format,
         }
     }
 
@@ -392,10 +415,10 @@ impl<'a, 'f> Table<'a> {
                 file.blocks().render(self.theme)
             }
             Column::User => {
-                file.user().render(self.theme, &*self.env.lock_users())
+                file.user().render(self.theme, &*self.env.lock_users(), self.user_format)
             }
             Column::Group => {
-                file.group().render(self.theme, &*self.env.lock_users())
+                file.group().render(self.theme, &*self.env.lock_users(), self.user_format)
             }
             Column::GitStatus => {
                 self.git_status(file).render(self.theme)

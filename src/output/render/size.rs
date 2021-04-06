@@ -41,8 +41,8 @@ impl f::Size {
         };
 
         let symbol = &prefix.symbol()[..1]; // make "Ki" to "K" like the ls command does usually, https://github.com/ogham/rust-number-prefix/blob/master/src/lib.rs
-        let number = if n < 10_f64 { numerics.format_float(n, 1) }
-                              else { numerics.format_int(n as isize) };
+        let decimal_to_diplay = if n < 10_f64 { 1 } else { 0 };
+        let number = numerics.format_float(n, decimal_to_diplay);
 
         // The numbers and symbols are guaranteed to be written in ASCII, so
         // we can skip the display width calculation.

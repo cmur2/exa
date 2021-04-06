@@ -93,7 +93,7 @@ fn main() {
         }
 
         OptionsResult::InvalidOptions(error) => {
-            eprintln!("{}", error);
+            eprintln!("exa: {}", error);
 
             if let Some(s) = error.suggestion() {
                 eprintln!("{}", s);
@@ -264,13 +264,15 @@ impl<'args> Exa<'args> {
 
         match (mode, self.console_width) {
             (Mode::Grid(ref opts), Some(console_width)) => {
-                let r = grid::Render { files, theme, file_style, opts, console_width };
+                let filter = &self.options.filter;
+                let r = grid::Render { files, theme, file_style, opts, console_width, filter };
                 r.render(&mut self.writer)
             }
 
             (Mode::Grid(_), None) |
             (Mode::Lines,   _)    => {
-                let r = lines::Render { files, theme, file_style };
+                let filter = &self.options.filter;
+                let r = lines::Render { files, theme, file_style, filter };
                 r.render(&mut self.writer)
             }
 
